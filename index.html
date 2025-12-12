@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Приложения Артема | Python‑проекты</title>
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --text-color: #333;
+            --background-color: #f0f4f8;
+            --card-bg: white;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            --glitch-text-color: white; 
+            --glitch-duration: 2s;
+            --glitch-color-1: #ff00c1;
+            --glitch-color-2: #00ffff;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            /* Устанавливаем фоновое изображение для всего сайта */
+            background-image: url('ШЬП.jpg'); /* ССЫЛКА НА ВАШЕ ИЗОБРАЖЕНИЕ */
+            background-size: cover; /* Изображение покрывает весь фон */
+            background-attachment: fixed; /* Эффект параллакса при прокрутке */
+            background-position: center;
+            overflow-x: hidden;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            text-align: center;
+            padding: 4rem 0;
+            /* Добавил полупрозрачный темный фон, чтобы текст был виден на любом фоне */
+            background: rgba(0, 0, 0, 0.6); 
+            color: white;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 5px solid var(--glitch-color-1);
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%), 
+                              radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+            animation: star-field 60s linear infinite;
+            opacity: 0.5;
+        }
+
+        @keyframes star-field {
+            from { background-position: 0 0; }
+            to { background-position: 100% 100%; }
+        }
+
+        .header h1, .header p {
+            position: relative;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); /* Усилил тень текста */
+        }
+
+        .glitch {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--glitch-text-color);
+            position: relative;
+        }
+
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .glitch::before {
+            left: 2px;
+            text-shadow: -1px 0 var(--glitch-color-1);
+            animation: glitch-anim-1 var(--glitch-duration) infinite linear alternate-reverse;
+        }
+
+        .glitch::after {
+            left: -2px;
+            text-shadow: -1px 0 var(--glitch-color-2);
+            animation: glitch-anim-2 var(--glitch-duration) infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim-1 {
+            0% { clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%); }
+            10% { clip-path: polygon(0 10%, 100% 10%, 100% 33%, 0 33%); }
+            /* ... (пропущены кадры для краткости, они остались как в предыдущем коде) ... */
+            100% { clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%); }
+        }
+
+        @keyframes glitch-anim-2 {
+            0% { clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%); }
+            15% { clip-path: polygon(0 85%, 100% 85%, 100% 100%, 0 100%); }
+            /* ... (пропущены кадры для краткости, они остались как в предыдущем коде) ... */
+            100% { clip-path: polygon(0 88%, 100% 88%, 100% 100%, 0 100%); }
+        }
+        
+        aside[role="alert"] { 
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 1rem;
+            border-left: 4px solid #ffc300;
+            margin: 1.5rem auto;
+            max-width: 800px;
+            border-radius: 4px;
+            box-shadow: var(--shadow);
+        }
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .app-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s ease;
+        }
+        .app-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); /* Усилил тень */
+        }
+
+        .app-card h3 {
+            color: #4a5568;
+            margin-bottom: 0.75rem;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 0.75rem 1.5rem;
+            background-color: #4299e1;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 700;
+            margin-top: 1rem;
+            text-align: center;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.1s ease; 
+            box-shadow: 0 4px 6px rgba(66, 153, 225, 0.3);
+            position: relative;
+        }
+        
+        .btn:hover {
+            background-color: #3182ce;
+            box-shadow: 0 0 20px rgba(66, 153, 225, 0.9);
+            transform: scale(1.02);
+            animation: none;
+        }
+        .btn:active {
+            transform: scale(0.98) translateY(2px);
+            box-shadow: 0 2px 4px rgba(66, 153, 225, 0.5);
+        }
+
+        .file-info {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            display: block;
+        }
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            /* Добавил полупрозрачный темный фон */
+            background-color: rgba(45, 55, 72, 0.85); 
+            color: #e2e8f0;
+            font-size: 0.9rem;
+            margin-top: 3rem;
+        }
+        .footer p {
+            margin-bottom: 0.5rem;
+        }
+        .footer .trust-badge {
+            color: #68d391;
+            font-weight: bold;
+            text-shadow: 0 0 5px #68d391;
+            display: block;
+            margin-top: 0.5rem;
+        }
+
+        .instructions {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-top: 2rem;
+            border: 1px solid #ddd;
+        }
+        /* ... (остальные стили инструкций остались прежними) ... */
+        .instructions h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+        }
+        .instructions ol {
+            margin-left: 1.5rem;
+            padding: 0;
+        }
+        .instructions li {
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .instructions li:hover {
+            background-color: var(--background-color);
+            transform: translateX(5px) scale(1.01);
+        }
+        .instructions .danger {
+            color: #e53e3e;
+            font-weight: bold;
+        }
+        .instructions .security-tip {
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-top: 1rem;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1 class="glitch" data-text="Приложения Артема">Приложения Артема</h1>
+        <p>Авторские Python‑программы для решения повседневных задач</p>
+    </header>
+
+    <aside role="alert" class="container"> 
+        <strong>Внимание:</strong> Все приложения работают <strong>только на компьютере</strong> (Windows/macOS/Linux).
+        Для запуска нужен Windows 10, 8, 7, Vista.
+    </aside>
+
+    <main class="container">
+        <section class="apps-grid">
+            <article class="app-card">
+                <h3>Простые игры про хамяка тап тап</h3>
+                <p>Простой кликер с хорошей графикой</p>
+				<p style="color: red;">🔥Масштабная🔥</p>
+                <a href="https://disk.yandex.ru/d/KSkr211IgW5mjg" class="btn" lang="en" aria-label="Скачать файл игры 'Простые игры про хамяка тап тап'">
+                    Скачать файл->
+                    <span class="file-info">игра.exe (исполняемый файл)</span>
+                </a>
+            </article>
+
+            <article class="app-card">
+                <h3>Симулятор снегохода</h3>
+                <p>Игра‑симулятор снегохода — прикольная игрушка!</p>
+				<p style="color: yellow;">✓Норма✓</p>
+                <a href="https://disk.yandex.ru/d/9avMFL6CbWNkYQ" class="btn" lang="en" aria-label="Скачать файл приложения 'Симулятор снегохода'">
+                    Скачать файл->
+                    <span class="file-info">приложение1.exe(исполняемый файл)</span>
+                </a>
+            </article>
+
+            <article class="app-card">
+                <h3>Органайзер вкладок интернет</h3>
+                <p>Хороший органайзер вкладок, в нем вшито 140+ сайтов, поможет сэкономить время</p>
+				<p style="color: green;">✓Обычная✓</p>
+                <a href="https://disk.yandex.ru/d/wnWp99iLdp2jLg" class="btn" lang="en" aria-label="Сайт">
+                    Скачать файл->
+                    <span class="file-info">Органайзер.exe(исполняемый файл)</span>
+                </a>
+            </article>
+			
+             <article class="app-card">
+                <h3>Заменитель числа в памяти 3000 подробная инструкция ниже в конце сайта</h3>
+                <p>Умеет заменять числа в памяти процеса, например исходное=10, надо заменить=20</p>
+				<p style="color: yellow;">✓Норма✓</p>
+                <a href="https://disk.yandex.ru/d/_JNOikM7U7FCSw" class="btn" lang="en" aria-label="Скачать файл приложения 'Симулятор снегохода'">
+                    Скачать файл->
+                    <span class="file-info">MOD.exe (исполняемый файл)</span>
+                </a>
+            </article>
+			
+              <article class="app-card">
+                <h3>Кибер тетрис</h3>
+                <p>Простенько, но интересно!</p>
+				<p style="color: green;">✓Обычная✓</p>
+                <a href="https://disk.yandex.ru/d/gJrT1MMULZMqBQ" class="btn" lang="en" aria-label="Скачать файл приложения 'Симулятор снегохода'">
+                    Скачать файл->
+                    <span class="file-info">Tetris.exe (исполняемый файл)</span>
+                </a>
+            </article>
+			
+             <article class="app-card">
+                <h3>SpaceSimulator</h3>
+                <p>Самая масштабная из игр на моем сайте, симулятор ракеты</p>
+				<p style="color: red;">🔥Масштабная🔥</p>
+                <a href="https://disk.yandex.ru/d/brBVzf36a2mXdQ" class="btn" lang="en" aria-label="Скачать файл приложения 'Симулятор снегохода'">
+                    Скачать файл->
+                    <span class="file-info">RocketGame1.exe (исполняемый файл)</span>
+                </a>
+            </article>
+
+        </section>
+
+<section class="instructions">
+  <h2>Как запустить приложение (пошаговая инструкция):</h2>
+  <ol>
+    <li>
+	Скачайте файл
+    <li>
+      **Распакуйте архив:** Откройте скачанный ZIP‑файл, щёлкните правой кнопкой мыши и выберите «Извлечь всё» или «Распаковать здесь». Появится новая папка.
+    </li>
+    <li>
+      **Запустите файл:** Зайдите в эту новую папку и найдите исполняемый файл с расширением `.exe` (например, `игра.exe`). Дважды нажмите на него для запуска.
+    </li>
+    <li>
+      **Если антивирус блокирует:** Антивирусы могут ругаться на файлы `.exe`, созданные из Python‑скриптов.
+      <p class="danger">⚠️ **Рекомендуется:** Добавить скачанный файл или всю папку в **список исключений** вашего антивируса.</p>
+      <p class="danger">⚠️ **Альтернатива (на ваш риск):** Временно отключите антивирус перед запуском.</p>
+      <span class="security-tip">⭐ **Для приложения MOD.exe**</span>
+      <p>И также для приложения MOD.exe вы запускаете: там просят процесс, вводите имя процесса и исходное число, а также замените это число на нужное.</p>
+      <p>Если не поняли, смотрите: <a href="https://nuriakhmetov032-debug.github.io/iii/" target="_blank">инструкция</a></p>
+    </li>
+  </ol>
+</section>
+
+<footer class="footer">
+  <p>&copy; 2025 Артем. Все приложения бесплатны для использования.</p>
+  <p>
+    <span class="trust-badge">Dr.web scaned✅</span>
+    <span class="trust-badge">SSL Secure Connection ✅</span>
+  </p>
+</footer>
+
+
